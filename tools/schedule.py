@@ -4,12 +4,13 @@ import json, random, sys, datetime as dt
 picks = [p["id"] for p in json.load(open(sys.argv[1]))]
 meta = json.load(open(sys.argv[2]))
 start = dt.date.fromisoformat(sys.argv[3])
+SKIP = int(sys.argv[5]) if len(sys.argv) > 5 else 0
 SLOTS = ["08:10", "09:05", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30",
          "16:25", "17:20", "18:15", "19:10", "20:05", "21:00"]
 BASE = "https://raw.githubusercontent.com/jjseocol-create/jjclips/main/clips/"
 def slots(n, offset_min=0):
     out = []
-    for i in range(n):
+    for i in range(SKIP, SKIP + n):
         d = start + dt.timedelta(days=i // len(SLOTS))
         h, m = map(int, SLOTS[i % len(SLOTS)].split(":"))
         t = dt.datetime(d.year, d.month, d.day, h, m) + dt.timedelta(minutes=offset_min)
@@ -17,7 +18,7 @@ def slots(n, offset_min=0):
     return out
 tt_order = picks[:]
 yt_order = picks[:]
-random.Random(7).shuffle(yt_order)
+random.Random(11).shuffle(yt_order)
 # make sure no clip lands within the same slot on both networks
 for i in range(len(yt_order)):
     if yt_order[i] == tt_order[i]:

@@ -23,7 +23,7 @@ dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=d
                             "csv=p=0", raw], capture_output=True, text=True).stdout)
 
 # ---- locate facecam (purple-room overlay) ----
-CANDS = {"right": (1483, 302, 437, 275), "topright": (1483, 0, 437, 275), "topleft": (0, 0, 528, 360)}
+CANDS = {"right": (1483, 302, 437, 275), "right3": (1483, 283, 437, 275), "topright": (1483, 0, 437, 275), "topleft": (0, 0, 528, 360)}
 def purple_frac(img, r):
     x, y, w, h = r
     hsv = cv2.cvtColor(img[y:y + h, x:x + w], cv2.COLOR_BGR2HSV)
