@@ -34,7 +34,7 @@ for net, order, off in (("tiktok", tt_order, 0), ("youtube", yt_order, 20)):
             info = {"autoPublish": True, "draft": False, "text": text, "media": [BASE + cid + ".mp4"],
                     "providers": [{"network": "tiktok"}],
                     "publicationDate": {"dateTime": when, "timezone": "America/Bogota"},
-                    "tiktokData": {"privacyOption": "PUBLIC_TO_EVERYONE", "disableComment": False,
+                    "tiktokData": {"title": q[:90], "privacyOption": "PUBLIC_TO_EVERYONE", "disableComment": False,
                                    "disableDuet": False, "disableStitch": False, "autoAddMusic": False,
                                    "commercialContentThirdParty": False, "commercialContentOwnBrand": False,
                                    "isAigc": False}}
