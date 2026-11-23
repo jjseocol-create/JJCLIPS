@@ -31,7 +31,7 @@ for net, order, off in (("tiktok", tt_order, 0), ("youtube", yt_order, 20)):
         q = m["q"]
         tags = " ".join(m["tags"])
         if net == "tiktok":
-            text = f"{q}\n\n{m['d']}\n\n{tags} #gaming #fyp #parati #elmune"
+            text = f"{q}\n\n{m['d']}\n\n{tags} #gaming #fyp #parati" + ("" if "#westcol" in tags else " #elmune")
             info = {"autoPublish": True, "draft": False, "text": text, "media": [BASE + cid + ".mp4"],
                     "providers": [{"network": "tiktok"}],
                     "publicationDate": {"dateTime": when, "timezone": "America/Bogota"},
@@ -42,13 +42,13 @@ for net, order, off in (("tiktok", tt_order, 0), ("youtube", yt_order, 20)):
         else:
             title = (q.split("\"")[1] if "\"" in q else q)
             title = f"\"{title}\" | GTA VI #shorts"[:100]
-            text = f"{m['d']}\n\n{tags} #gaming #shorts #elmune"
+            text = f"{m['d']}\n\n{tags} #gaming #shorts" + ("" if "#westcol" in tags else " #elmune")
             info = {"autoPublish": True, "draft": False, "text": text, "media": [BASE + cid + ".mp4"],
                     "providers": [{"network": "youtube"}],
                     "publicationDate": {"dateTime": when, "timezone": "America/Bogota"},
                     "youtubeData": {"title": title, "type": "short", "privacy": "public",
                                     "category": "GAMING", "madeForKids": False,
-                                    "tags": [t.lstrip("#") for t in m["tags"]] + ["gta 6", "gameplay", "elmune"],
+                                    "tags": [t.lstrip("#") for t in m["tags"]] + ["gta 6", "gameplay"] + ([] if "#westcol" in tags else ["elmune"]),
                                     "isAiGeneratedContent": False}}
         plan.append({"net": net, "id": cid, "date": when + "-05:00", "info": info})
 json.dump(plan, open(sys.argv[4], "w"), ensure_ascii=False, indent=1)
