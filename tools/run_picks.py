@@ -4,6 +4,9 @@ import json, os, subprocess, sys
 URL = {"A": "https://kick.com/elmune/videos/01a1f1d5-91e0-758f-a3a4-8f0583dcd0de",
        "B": "https://kick.com/elmune/videos/01a1f66d-80f0-7ced-8b15-6820cda6841d",
        "C": "https://kick.com/elmune/videos/01a1fb4a-7010-7cb6-a80e-60ad6f9c882f"}
+import os as _os
+if _os.path.exists("/home/claude/vods/w/urls.json"):
+    URL.update(json.load(open("/home/claude/vods/w/urls.json")))
 picks = json.load(open(sys.argv[1]))
 tr = {}
 for f in sys.argv[2:]:
@@ -18,6 +21,7 @@ for p in picks:
     spec = {"id": p["id"], "url": URL[p["id"][0]], "start": c["t"] + p["a"], "end": c["t"] + p["b"],
             "peak": c["t"] + p.get("pk", 0), "words": c["words"], "cover_title": p["cover"],
             "cover_sub": p.get("sub", ""), "out": out}
+    if p["id"][0] in "WX": spec["cam"] = [0, 0, 508, 284]
     os.makedirs(f"/home/claude/vods/work/{p['id']}", exist_ok=True)
     sp = f"/home/claude/vods/work/{p['id']}/spec.json"
     json.dump(spec, open(sp, "w"))

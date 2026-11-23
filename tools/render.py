@@ -40,6 +40,8 @@ for f in np.linspace(0.1, 0.9, 7):
             votes[k] += purple_frac(img, r)
 best = max(votes, key=votes.get)
 cam = CANDS[best] if votes[best] / max(1, len(frames)) > 0.08 else None
+if S.get("cam"):
+    cam = tuple(S["cam"]); best = "forced"
 
 # ---- cover image ----
 peak_rel = min(max(S["peak"] - S["start"], 0.5), dur - 0.5)
@@ -55,7 +57,7 @@ if cam:
     fh = min(face.height, 900)
     gh = H - fh
     gw_src = int(1080 * W / gh)
-    gxx = max(0, (1483 - gw_src) // 2) if best != "topleft" else 528 + (1392 - gw_src) // 2
+    gxx = (1920 - gw_src) // 2 if best == "forced" else (max(0, (1483 - gw_src) // 2) if best != "topleft" else 528 + (1392 - gw_src) // 2)
     game = simg.crop((gxx, 0, gxx + gw_src, 1080)).resize((W, gh), Image.LANCZOS)
     bg = Image.new("RGB", (W, H))
     bg.paste(game, (0, fh))
@@ -168,7 +170,7 @@ if cam:
     x, y0, w, h = cam
     zx, zy, zw, zh = x + int(w * 0.2), y0 + int(h * 0.1), int(w * 0.6), int(h * 0.6)
     gw = int(1080 * 1080 / (H - CAM_H)) // 2 * 2
-    gx = (1483 - gw) // 2 if best != "topleft" else 528 + (1920 - 528 - gw) // 2
+    gx = (1920 - gw) // 2 if best == "forced" else ((1483 - gw) // 2 if best != "topleft" else 528 + (1920 - 528 - gw) // 2)
     fc = (f"[0:v]fps=30,split=3[a][b][c];"
           f"[a]crop={gw}:1080:{gx}:0,scale=1080:{H-CAM_H}[g];"
           f"[b]crop={w}:{h}:{x}:{y0},scale=1080:{CAM_H}[cm];"
